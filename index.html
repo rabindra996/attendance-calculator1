@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Rabindra Ultra Attendance Calculator</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Segoe UI;
+background:linear-gradient(270deg,#ff6a00,#ee0979,#00c9ff,#92fe9d);
+background-size:600% 600%;
+animation:bg 12s infinite;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+color:white;
+text-align:center;
+}
+
+@keyframes bg{
+0%{background-position:0%}
+50%{background-position:100%}
+100%{background-position:0%}
+}
+
+.card{
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(15px);
+padding:35px;
+border-radius:20px;
+width:350px;
+box-shadow:0 0 30px rgba(0,0,0,0.4);
+}
+
+input,select{
+width:90%;
+padding:10px;
+margin:8px;
+border-radius:10px;
+border:none;
+}
+
+button{
+padding:12px 25px;
+border:none;
+border-radius:25px;
+font-weight:bold;
+cursor:pointer;
+margin-top:10px;
+background:white;
+color:#333;
+}
+
+#calculator{
+display:none;
+}
+
+.result{
+margin-top:15px;
+font-weight:bold;
+font-size:17px;
+}
+
+.circle{
+width:130px;
+height:130px;
+border-radius:50%;
+border:10px solid rgba(255,255,255,0.3);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
+margin:auto;
+margin-top:15px;
+}
+
+.green{
+border-color:#00ff9d;
+}
+
+.red{
+border-color:#ff4d4d;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card" id="welcome">
+
+<h1>RABINDRA'S CALCULATOR</h1>
+
+<p>Student Smart Tool 🎓</p>
+
+<button onclick="start()">Start</button>
+
+</div>
+
+
+<div class="card" id="calculator">
+
+<h2>Attendance Calculator</h2>
+
+<input type="number" id="total" placeholder="Total Classes">
+
+<input type="number" id="attended" placeholder="Classes Attended">
+
+<select id="required">
+
+<option value="70">Required 70%</option>
+<option value="75">Required 75%</option>
+<option value="80">Required 80%</option>
+<option value="85">Required 85%</option>
+<option value="90">Required 90%</option>
+
+</select>
+
+<button onclick="calculate()">Calculate</button>
+
+<div class="circle" id="circle">0%</div>
+
+<div class="result" id="result"></div>
+
+</div>
+
+
+<script>
+
+function start(){
+
+document.getElementById("welcome").style.display="none";
+document.getElementById("calculator").style.display="block";
+
+}
+
+
+function calculate(){
+
+let total=parseInt(document.getElementById("total").value);
+let attended=parseInt(document.getElementById("attended").value);
+let requiredPercent=parseInt(document.getElementById("required").value);
+
+if(!total || !attended){
+
+alert("Enter values");
+return;
+
+}
+
+if(attended>total){
+
+alert("Attended cannot be greater than total");
+return;
+
+}
+
+let percentage=(attended/total)*100;
+
+let circle=document.getElementById("circle");
+
+circle.innerHTML=percentage.toFixed(1)+"%";
+
+let text="Current Attendance: "+percentage.toFixed(2)+"% <br>";
+
+if(percentage>=requiredPercent){
+
+circle.className="circle green";
+
+let bunk=Math.floor((attended*100/requiredPercent)-total);
+
+text+="✅ You can bunk "+bunk+" classes 😎<br>";
+
+text+="Suggestion: You may bunk next class safely 👍";
+
+}else{
+
+circle.className="circle red";
+
+let need=Math.ceil((requiredPercent*total/100 - attended)/(1-requiredPercent/100));
+
+text+="⚠️ Attend "+need+" more classes 📚<br>";
+
+text+="Suggestion: Do NOT bunk next class ❌";
+
+}
+
+document.getElementById("result").innerHTML=text;
+
+}
+
+</script>
+
+</body>
+</html>
